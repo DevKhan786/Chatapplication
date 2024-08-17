@@ -14,12 +14,11 @@ export default function Chat({ room }) {
   const [newMessage, setNewMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const messagesEndRef = useRef(null);
-  const currentUserId = auth.currentUser?.uid;  // Ensure auth might not be ready yet
-
+  const currentUserId = auth.currentUser?.uid;
   const messagesRef = collection(db, "messages");
 
   useEffect(() => {
-    if (!room) return; // Ensure room exists
+    if (!room) return;
 
     const queryMessages = query(
       messagesRef,
@@ -45,7 +44,8 @@ export default function Chat({ room }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!newMessage.trim()) return; // Prevent empty message submission
+    if (!newMessage.trim()) return;
+
     try {
       await addDoc(messagesRef, {
         text: newMessage.trim(),
@@ -66,12 +66,16 @@ export default function Chat({ room }) {
         {messages.map((message) => (
           <div
             className={`message ${
-              message.userId === currentUserId ? "self" : "other"
+              message.user === "System" && message.text.includes("has joined")
+                ? "user-joined"
+                : message.userId === currentUserId
+                ? "self"
+                : "other"
             }`}
             key={message.id}
           >
             <span className="message-user">{message.user}</span>
-            <h1 className="message-text">{message.text}</h1>
+            <p className="message-text">{message.text}</p>
           </div>
         ))}
         <div ref={messagesEndRef} />

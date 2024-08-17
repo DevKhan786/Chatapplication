@@ -146,3 +146,13 @@ input:focus {
 .send-button:hover {
   background-color: #218838;
 }
+
+.message.user-joined {
+  background-color: #e9ecef;
+  color: #495057;
+  font-style: italic;
+  text-align: center;
+  border: 1px solid #ced4da;
+  padding: 10px;
+  border-radius: 10px;
+}
